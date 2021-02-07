@@ -15,6 +15,7 @@ COpenGLControl::COpenGLControl(void)
 	m_fZoom = 10.0f;   // Zoom on model in camera view
 	m_fRotX = 0.0f;    // Rotation on model in camera view
 	m_fRotY = 0.0f;    // Rotation on model in camera view
+	m_bIsMaximized = false;
 }
 
 // generated handlers
@@ -81,6 +82,52 @@ void COpenGLControl::OnSize(UINT nType, int cx, int cy)
 
 	// Model view
 	glMatrixMode(GL_MODELVIEW);
+
+	switch (nType)
+	{
+		// If window resize token is "maximize"
+		case SIZE_MAXIMIZED:
+		{
+			// Get the current window rect
+			GetWindowRect(m_rect);
+
+			// Move the window accordingly
+			MoveWindow(6, 6, cx - 14, cy - 14);
+
+			// Get the new window rect
+			GetWindowRect(m_rect);
+
+			// Store our old window as the new rect
+			m_oldWindow = m_rect;
+
+			break;
+		}
+
+		// If window resize token is "restore"
+		case SIZE_RESTORED:
+		{
+			// If the window is currently maximized
+			if (m_bIsMaximized)
+			{
+				// Get the current window rect
+				GetWindowRect(m_rect);
+
+				// Move the window accordingly (to our stored old window)
+				MoveWindow(m_oldWindow.left,
+					m_oldWindow.top - 18,
+					m_originalRect.Width() - 4,
+					m_originalRect.Height() - 4);
+
+				// Get the new window rect
+				GetWindowRect(m_rect);
+
+				// Store our old window as the new rect
+				m_oldWindow = m_rect;
+			}
+
+			break;
+		}
+	}
 }
 
 void COpenGLControl::OnDraw(CDC* pDC)

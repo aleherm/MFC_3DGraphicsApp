@@ -33,4 +33,6 @@ protected:
 
 private:
 	COpenGLControl m_oglWindow;
+public:
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };

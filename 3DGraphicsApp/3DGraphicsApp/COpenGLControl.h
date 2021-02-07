@@ -20,12 +20,12 @@ public:
 	float m_fZoom;
 	float m_fPosX;
 	float m_fPosY;
+	bool m_bIsMaximized;
 
 	COpenGLControl();
 	//virtual ~COpenGLControl();
 
 	// added manually
-	void myMethod() {}
 	void oglCreate(CRect rect, CWnd* parent);
 	void oglInitialize(void);
 	void oglDrawScene(void);
@@ -33,11 +33,13 @@ public:
 	afx_msg void OnDraw(CDC* pDC);
 
 	// generated
-	DECLARE_MESSAGE_MAP()
 	afx_msg void OnPaint();
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+
+	// method call
+	DECLARE_MESSAGE_MAP()
 
 private:
 	/*******************/

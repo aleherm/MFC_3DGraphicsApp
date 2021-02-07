@@ -31,6 +31,7 @@ void CMy3DGraphicsAppDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CMy3DGraphicsAppDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -99,3 +100,31 @@ HCURSOR CMy3DGraphicsAppDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMy3DGraphicsAppDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialog::OnSize(nType, cx, cy);
+
+	switch (nType)
+	{
+		case SIZE_RESTORED:
+		{
+			if (m_oglWindow.m_bIsMaximized)
+			{
+				m_oglWindow.OnSize(nType, cx, cy);
+				m_oglWindow.m_bIsMaximized = false;
+			}
+
+			break;
+		}
+
+		case SIZE_MAXIMIZED:
+		{
+			m_oglWindow.OnSize(nType, cx, cy);
+			m_oglWindow.m_bIsMaximized = true;
+
+			break;
+		}
+	}
+}
